@@ -11,14 +11,17 @@ namespace Remote_Vehicle_Locker.Functions
 {
     internal class Plugin
     {
-        private static Player player = Game.LocalPlayer;
-        private Vehicle myVehicle = player.LastVehicle;
+        private Player player;
+        private Vehicle myVehicle;
         internal void KeyEvent()
         {
             KeyboardState Keyboard = new KeyboardState();
 
             if (Keyboard.PressedKeys.Contains(Keys.L))
             {
+                player = Game.LocalPlayer;
+                myVehicle = player.LastVehicle;
+
                 CloseVehicleDoors(myVehicle);
                 LockCar(myVehicle);
                 BlipSiren(myVehicle);
