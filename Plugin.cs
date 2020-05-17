@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Rage;
 using Remote_Vehicle_Locker;
@@ -11,43 +7,41 @@ namespace Remote_Vehicle_Locker.Functions
 {
     internal class Plugin
     {
-        private Player player;
-        private Vehicle myVehicle;
-        internal void KeyEvent()
+        internal Vehicle myVehicle = Game.LocalPlayer.LastVehicle;
+
+        internal static void FlashIndy(ref Vehicle Vehicle)
         {
-            KeyboardState Keyboard = new KeyboardState();
-
-            if (Keyboard.PressedKeys.Contains(Keys.L))
-            {
-                player = Game.LocalPlayer;
-                myVehicle = player.LastVehicle;
-
-                CloseVehicleDoors(myVehicle);
-                LockCar(myVehicle);
-                BlipSiren(myVehicle);
-                GameFiber.ExecuteFor(FlashIndy, 3000);
-
-            }
+            
+            Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Both;
+            GameFiber.Sleep(500);
+            Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
         }
-
-        private void FlashIndy()
-        {
-            myVehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Both;
-        }
-        private static void BlipSiren(Vehicle Vehicle)
+        internal static void BlipSiren(ref Vehicle Vehicle)
         {
             if (Vehicle.HasSiren)
             {
-                Vehicle.BlipSiren(false);
+                Vehicle.BlipSiren(true);
             }
 
 
         }
-        private static void LockCar(Vehicle Vehicle)
+        internal static void LockCar(ref Vehicle Vehicle)
         {
-            Vehicle.LockStatus = VehicleLockStatus.Locked;
-        }
-        private static void CloseVehicleDoors(Vehicle Vehicle)
+            // if (Vehicle.Driver == null)
+            //{
+            if (Vehicle.LockStatus == VehicleLockStatus.Locked)
+            {
+                Vehicle.LockStatus = VehicleLockStatus.Unlocked;
+            }
+
+
+
+            else
+            {
+                Vehicle.LockStatus = VehicleLockStatus.Locked;
+            }
+        }    
+        internal static void CloseVehicleDoors(ref Vehicle Vehicle)
         {
             VehicleDoor[] vDoor = Vehicle.GetDoors();
 
