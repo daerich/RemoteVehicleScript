@@ -8,7 +8,7 @@ namespace Remote_Vehicle_Locker.Functions
 
         internal static void FlashIndy(Vehicle Vehicle)
         {
-            
+
             Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Both;
             GameFiber.Sleep(500);
             Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
@@ -37,7 +37,7 @@ namespace Remote_Vehicle_Locker.Functions
             {
                 Vehicle.LockStatus = VehicleLockStatus.Locked;
             }
-        }    
+        }
         internal static void CloseVehicleDoors(Vehicle Vehicle)
         {
             VehicleDoor[] vDoor = Vehicle.GetDoors();
@@ -52,5 +52,8 @@ namespace Remote_Vehicle_Locker.Functions
 
         }
     }
+
+
+
 
 }
