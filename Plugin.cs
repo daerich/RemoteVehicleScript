@@ -6,14 +6,14 @@ namespace Remote_Vehicle_Locker.Functions
     {
         internal Vehicle Vehicle { get; set; } = Game.LocalPlayer.LastVehicle; //do not declare public instance fields!
 
-        internal static void FlashIndy(Vehicle Vehicle)
+        internal void FlashIndy()
         {
 
             Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Both;
             GameFiber.Sleep(500);
             Vehicle.IndicatorLightsStatus = VehicleIndicatorLightsStatus.Off;
         }
-        internal static void BlipSiren(Vehicle Vehicle)
+        internal void BlipSiren()
         {
             if (Vehicle.HasSiren)
             {
@@ -22,13 +22,15 @@ namespace Remote_Vehicle_Locker.Functions
 
 
         }
-        internal static void LockCar(Vehicle Vehicle)
+        internal void LockCar()
         {
             // if (Vehicle.Driver == null)
             //{                                     Funny little artifact
             if (Vehicle.LockStatus == VehicleLockStatus.Locked)
             {
                 Vehicle.LockStatus = VehicleLockStatus.Unlocked;
+
+                Game.DisplaySubtitle("*Pins UP");
             }
 
 
@@ -36,9 +38,10 @@ namespace Remote_Vehicle_Locker.Functions
             else
             {
                 Vehicle.LockStatus = VehicleLockStatus.Locked;
+                Game.DisplaySubtitle("*Pins DOWN");
             }
         }
-        internal static void CloseVehicleDoors(Vehicle Vehicle)
+        internal void CloseVehicleDoors()
         {
             VehicleDoor[] vDoor = Vehicle.GetDoors();
 
