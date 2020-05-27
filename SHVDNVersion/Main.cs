@@ -1,4 +1,5 @@
 ﻿using GTA;
+using GTA.UI;
 using RMVL_Scripthookv.Functions;
 using DaErich.Core;
 using System.Windows.Forms;
@@ -30,12 +31,19 @@ namespace RMVL_Scripthookv
                 Vehicle myVehicle = Plg.Vehicle;
                 if (myVehicle != null && Plugin.Player.LastVehicle.Position.DistanceTo(Plugin.Player.Character.Position) <= 100f)
                 {
-                    //Game.LogTrivial("Key Pressed");
                     Plg.BlipSiren();
                     Plg.FlashIndy();
                     Plg.LockCar();
                     Plg.CloseVehicleDoors();
-                    Wait(2000);
+                    //Wait(2000);
+
+                }
+                else if (myVehicle != null)
+                {
+                    int FAR = Notification.Show("*Too far away from Vehicle", true);
+                    Wait(1000);
+                    Notification.Hide(FAR);
+                   // Wait(2000);
                 }
             }
         }

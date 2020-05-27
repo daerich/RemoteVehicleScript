@@ -69,13 +69,16 @@ namespace RMVL_Scripthookv.Functions
         }
         internal void CloseVehicleDoors()
         {
-            VehicleDoorCollection vDoor = Vehicle.Doors;
-
-            foreach (VehicleDoor door in vDoor.ToArray())
+            if (Vehicle.LockStatus == VehicleLockStatus.Locked)
             {
-                if (door.IsOpen)
+                VehicleDoorCollection vDoor = Vehicle.Doors;
+
+                foreach (VehicleDoor door in vDoor.ToArray())
                 {
-                    door.Close(false);
+                    if (door.IsOpen)
+                    {
+                        door.Close(false);
+                    }
                 }
             }
 
