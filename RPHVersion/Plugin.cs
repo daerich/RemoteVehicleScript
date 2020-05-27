@@ -1,4 +1,8 @@
-﻿using Rage;
+﻿/* ------------------------------------------
+			COPYRIGHT © DAERICH 2020
+ALL RIGHTS RESERVED EXCEPT OTHERWISE STATED IN COPYRIGHT.TXT
+   ------------------------------------------ */
+using Rage;
 
 namespace Remote_Vehicle_Locker.Functions
 {

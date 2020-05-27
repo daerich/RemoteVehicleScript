@@ -1,4 +1,8 @@
-﻿using Rage;
+﻿/* ------------------------------------------
+			COPYRIGHT © DAERICH 2020
+ALL RIGHTS RESERVED EXCEPT OTHERWISE STATED IN COPYRIGHT.TXT
+   ------------------------------------------ */
+using Rage;
 using System;
 using System.IO;
 using System.Linq;

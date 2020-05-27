@@ -1,4 +1,8 @@
-﻿using System.Windows.Forms;
+﻿/* ------------------------------------------
+			COPYRIGHT © DAERICH 2020
+ALL RIGHTS RESERVED EXCEPT OTHERWISE STATED IN COPYRIGHT.TXT
+   ------------------------------------------ */
+using System.Windows.Forms;
 using Rage;
 using Rage.Attributes;
 using DaErich.Core;

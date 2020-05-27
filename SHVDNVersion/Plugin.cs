@@ -1,4 +1,8 @@
-﻿using GTA;
+﻿/* ------------------------------------------
+			COPYRIGHT © DAERICH 2020
+ALL RIGHTS RESERVED EXCEPT OTHERWISE STATED IN COPYRIGHT.TXT
+   ------------------------------------------ */
+using GTA;
 using GTA.UI;
 
 namespace RMVL_Scripthookv.Functions
