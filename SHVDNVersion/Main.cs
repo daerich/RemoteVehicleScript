@@ -5,7 +5,7 @@ ALL RIGHTS RESERVED EXCEPT OTHERWISE STATED IN COPYRIGHT.TXT
 using GTA;
 using GTA.UI;
 using RMVL_Scripthookv.Functions;
-using DaErich.Core;
+using DaErich.Core.External;
 using System.Windows.Forms;
 using System;
 
@@ -26,10 +26,12 @@ namespace RMVL_Scripthookv
 
         private void OnKeyDown(object sender, KeyEventArgs e)
         {
-            const string cvars = "LockKey";
-            FileReader FileRD = new FileReader("scripts/VehicleLocker.ini", cvars);
-            Enum.TryParse(FileRD.GetCurrentValue(), out Keys kresult);
-            if (kresult == e.KeyCode)
+            string path = "scripts/VehicleLocker.ini";
+            IniFile FileRD1 = new IniFile(path);
+            IniFile FileRD2 = new IniFile(path);
+            Enum.TryParse(FileRD1.Read("LockKey", "General"), out Keys kresult1);
+            Enum.TryParse(FileRD2.Read("WindowKey", "General"), out Keys kresult2);
+           if (kresult1 == e.KeyCode)
             {
                 Plugin Plg = new Plugin();
                 Vehicle myVehicle = Plg.Vehicle;
@@ -44,11 +46,25 @@ namespace RMVL_Scripthookv
                 }
                 else if (myVehicle != null)
                 {
-                    int FAR = Notification.Show("*Too far away from Vehicle", true);
+                    int FAR = Notification.Show("*Too far away from Vehicle*", true);
                     Wait(1000);
                     Notification.Hide(FAR);
-                   // Wait(2000);
                 }
+            }
+          if (kresult2 == e.KeyCode)
+            {
+                Plugin Plg = new Plugin();
+                Vehicle myVehicle = Plg.Vehicle;
+                if (myVehicle != null && Plugin.Player.LastVehicle.Position.DistanceTo(Plugin.Player.Character.Position) <= 100f)
+                {
+                    Plg.RollDown();
+                }
+                else if (myVehicle != null)
+                {
+                    int FAR = Notification.Show("*Too far away from Vehicle*", true);
+                    Wait(1000);
+                    Notification.Hide(FAR);
+                } 
             }
         }
     }

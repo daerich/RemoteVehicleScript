@@ -4,10 +4,11 @@ ALL RIGHTS RESERVED EXCEPT OTHERWISE STATED IN COPYRIGHT.TXT
    ------------------------------------------ */
 using GTA;
 using GTA.UI;
+using System;
 
 namespace RMVL_Scripthookv.Functions
 {
-   internal class Plugin
+    internal class Plugin
     {
         internal static Player Player = Game.Player;
         internal Vehicle Vehicle { get; set; } //do not declare public instance fields!
@@ -58,7 +59,7 @@ namespace RMVL_Scripthookv.Functions
                 Vehicle.LockStatus = VehicleLockStatus.Unlocked;
                 Script.Wait(1000);
                 Notification.Hide(PINSUP);
-                
+
             }
 
 
@@ -66,7 +67,7 @@ namespace RMVL_Scripthookv.Functions
             else
             {
                 Vehicle.LockStatus = VehicleLockStatus.Locked;
-               int PINSD = Notification.Show("*Pins DOWN*", true);
+                int PINSD = Notification.Show("*Pins DOWN*", true);
                 Script.Wait(1000);
                 Notification.Hide(PINSD);
             }
@@ -87,5 +88,26 @@ namespace RMVL_Scripthookv.Functions
             }
 
         }
+
+        internal void RollDown()
+        {
+            for (int i = 0; i <= 1; i++)
+            {
+                VehicleWindowIndex window = (VehicleWindowIndex)i;
+                if (Vehicle.Windows[window].IsIntact)
+                {
+                    Vehicle.Windows[window].RollDown();               
+                }
+                else
+                {
+                    Vehicle.Windows[window].RollUp();
+                }
+                //Vehicle.Windows.RollDownAllWindows();
+
+            }
+
+        }
     }
+
 }
+
