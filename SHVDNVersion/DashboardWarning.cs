@@ -81,6 +81,7 @@ namespace RMVL_Scripthookv.Dashboard
         public DashboardWarning()
         {
             Tick += OnTick;
+            Crash += OnCrash;
 
             IntPtr DashLib = Dll.GetModuleHandle(@"DashHook.dll");
             if (DashLib == IntPtr.Zero)
@@ -101,7 +102,7 @@ namespace RMVL_Scripthookv.Dashboard
 
         private void OnTick(object sender, EventArgs e)
         {
-            Crash += OnCrash;
+            
 
             if (isCompatible && Game.Player.Character.IsInVehicle())
             {
