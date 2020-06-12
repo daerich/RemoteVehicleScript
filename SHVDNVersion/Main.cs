@@ -35,7 +35,7 @@ namespace RMVL_Scripthookv
             {
                 Plugin Plg = new Plugin();
                 Vehicle myVehicle = Plg.Vehicle;
-                if (myVehicle != null && Plugin.Player.LastVehicle.Position.DistanceTo(Plugin.Player.Character.Position) <= 100f)
+                if (myVehicle != null && myVehicle.Position.DistanceTo(Plugin.Player.Character.Position) <= 100f)
                 {
                     Plg.BlipSiren();
                     Plg.FlashIndy();
@@ -55,7 +55,7 @@ namespace RMVL_Scripthookv
             {
                 Plugin Plg = new Plugin();
                 Vehicle myVehicle = Plg.Vehicle;
-                if (myVehicle != null && Plugin.Player.LastVehicle.Position.DistanceTo(Plugin.Player.Character.Position) <= 100f)
+                if (myVehicle != null && myVehicle.Position.DistanceTo(Plugin.Player.Character.Position) <= 100f)
                 {
                     Plg.RollDown();
                 }
