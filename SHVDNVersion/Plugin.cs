@@ -4,7 +4,6 @@ ALL RIGHTS RESERVED EXCEPT OTHERWISE STATED IN COPYRIGHT.TXT
    ------------------------------------------ */
 using GTA;
 using GTA.UI;
-using System;
 
 namespace RMVL_Scripthookv.Functions
 {
@@ -71,6 +70,7 @@ namespace RMVL_Scripthookv.Functions
                 Script.Wait(1000);
                 Notification.Hide(PINSD);
             }
+            AmbientLightning();
         }
         internal void CloseVehicleDoors()
         {
@@ -89,6 +89,21 @@ namespace RMVL_Scripthookv.Functions
 
         }
 
+        internal void AmbientLightning()
+        {
+            if (World.CurrentTimeOfDay.TotalHours >= 18.00 || World.CurrentTimeOfDay.TotalHours < 8.00)
+            {
+                if (Vehicle.LockStatus == VehicleLockStatus.Unlocked)
+                {
+                    Vehicle.IsInteriorLightOn = true;
+                }
+                if (Vehicle.LockStatus == VehicleLockStatus.Locked)
+                {
+                    Vehicle.IsInteriorLightOn = false;
+                }
+            }
+        }
+
         internal void RollDown()
         {
             for (int i = 0; i <= 1; i++)
@@ -102,7 +117,6 @@ namespace RMVL_Scripthookv.Functions
                 {
                     Vehicle.Windows[window].RollUp();
                 }
-                //Vehicle.Windows.RollDownAllWindows();
 
             }
 
@@ -110,4 +124,3 @@ namespace RMVL_Scripthookv.Functions
     }
 
 }
-
