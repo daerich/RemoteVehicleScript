@@ -6,7 +6,10 @@ using System;
 using System.Runtime.InteropServices;
 using DaErich.Core.External;
 using GTA;
-using GTA.UI;
+using RMVL_Scripthookv.Util;
+
+//inspired/ aided by this code snippet by ikt @gta5-mods.com 
+//https://gist.github.com/E66666666/d11cdbd9800ad73efeff612374349347
 
 namespace RMVL_Scripthookv.Dashboard
 {
@@ -50,33 +53,23 @@ namespace RMVL_Scripthookv.Dashboard
     {
         [DllImport("kernel32")]
         internal static extern IntPtr GetModuleHandle(string lpFileName);
-    }
-    internal static class DashHookDll
-    {
-        [DllImport("DashHook.dll")]
-        public static extern void DashHook_GetData(out VehicleDashboardData data);
-
-        [DllImport("DashHook.dll")]
-        public static extern void DashHook_SetData(VehicleDashboardData data);
+        [DllImport("kernel32")]
+        internal static extern IntPtr GetProcAddress(IntPtr hModule, string procname);
     }
     internal class DashboardWarning : Script
     {
         private readonly bool isCompatible;
-        private IniFile dashIni = new IniFile("scripts/VehicleLocker.ini");
-        private static Vehicle PlayerVeh()
-        {
-           
-            Vehicle[] AllVehicles = World.GetAllVehicles();
-            foreach(Vehicle vehicle in AllVehicles)
-            {
-                if(vehicle.Driver == Game.Player.Character){
+        private readonly IniFile dashIni = new IniFile("scripts/VehicleLocker.ini");
+        private readonly string path = "scripts/DashboardWarning.log";
 
-                    return vehicle;
-                }
-            }
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void FnGetStruct(out VehicleDashboardData data);
 
-            return null;
-        }
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate void FnSetStruct(VehicleDashboardData data);
+
+        FnGetStruct DashHook_GetData;
+        FnSetStruct DashHook_SetData;
    
         public DashboardWarning()
         {
@@ -86,16 +79,22 @@ namespace RMVL_Scripthookv.Dashboard
             IntPtr DashLib = Dll.GetModuleHandle(@"DashHook.dll");
             if (DashLib == IntPtr.Zero)
             {
-                isCompatible = false;
-
-                int Note = Notification.Show("DashHook not found!");
-                Wait(1000);
-                Notification.Hide(Note);
+                Logger.Write(path, "DashHook.dll not found!");
             }
 
+             DashHook_GetData = CheckAddr<FnGetStruct>(DashLib, "DashHook_GetData");
+             DashHook_SetData = CheckAddr<FnSetStruct>(DashLib, "DashHook_SetData");
+
+            if(DashHook_GetData == null || DashHook_SetData == null)
+            {
+                isCompatible = false;
+                Logger.Write(path, "DashWarning disabled!");
+
+            }
             else
             {
                 isCompatible = true;
+                Logger.Write(path, "Dashboard Warning initialized!");
             }
 
         }
@@ -124,10 +123,24 @@ namespace RMVL_Scripthookv.Dashboard
             }
         }
 
+        private T CheckAddr<T>(IntPtr Dashboard, string funct) where T: class
+        {
+            IntPtr dashfunc = Dll.GetProcAddress(Dashboard, funct);
+            if (dashfunc == IntPtr.Zero)
+            {
+                Logger.Write(path, "Processes not found!");
+
+                return null;
+            }
+            return Marshal.GetDelegateForFunctionPointer<T>(dashfunc);
+        }
+
+
         private void CheckStatus()
         {
+        
             CEventArgs e = new CEventArgs();
-            Vehicle myVehicle = PlayerVeh();
+            Vehicle myVehicle = Game.Player.Character.CurrentVehicle;
             if (myVehicle != null)
             {
                 if (myVehicle.BodyHealth <= 950f)
@@ -143,10 +156,10 @@ namespace RMVL_Scripthookv.Dashboard
             }
         }
 
-        private static void DashControl(IniFile file, bool on = false)
+        private void DashControl(IniFile file, bool on = false)
         {
             VehicleDashboardData data = new VehicleDashboardData();
-            DashHookDll.DashHook_GetData(out data);
+            DashHook_GetData(out data);
             data.batteryLight = on;
             data.engineLight = on;
             data.oilLight = on;
@@ -159,7 +172,7 @@ namespace RMVL_Scripthookv.Dashboard
                 data.handbrakeLight = false;
             }
             
-            DashHookDll.DashHook_SetData(data);
+            DashHook_SetData(data);
         }
 
             
@@ -173,4 +186,3 @@ namespace RMVL_Scripthookv.Dashboard
     }
 
 }
-
