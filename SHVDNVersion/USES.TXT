@@ -1,3 +1,4 @@
 USES:
 - UTIL/INIPARSER.CS
+- UTIL/LOGGER.CS
 - DasHHook by ikt @ gta5-mods.com
