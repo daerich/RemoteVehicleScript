@@ -87,7 +87,7 @@ namespace RMVL_Scripthookv.MTL
         {
             Vehicle playerVeh = Game.Player.Character.CurrentVehicle;
 
-            if (IsActive() && playerVeh != null && playerVeh.Exists() && playerVeh.Speed > 0.0f && NeutralGear() && ShiftMode() == 3)
+            if (IsActive() && playerVeh != null && playerVeh.Exists() && !NeutralGear() && ShiftMode() == 3)
             {
                 Game.Player.Character.Task.PlayAnimation(animdict, anim, 8f, -1, AnimationFlags.UpperBodyOnly | (AnimationFlags)32);
             }
