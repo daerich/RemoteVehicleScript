@@ -9,12 +9,11 @@ namespace RMVL_Scripthookv.Functions
 {
     internal class Plugin
     {
-        internal static Player Player = Game.Player;
         internal Vehicle Vehicle { get; set; } //do not declare public instance fields!
 
         public Plugin()
         {
-            Vehicle = Player.Character.LastVehicle;
+            Vehicle = Game.Player.Character.LastVehicle;
         }
 
         internal void FlashIndy()

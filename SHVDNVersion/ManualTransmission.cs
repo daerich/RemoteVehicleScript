@@ -2,6 +2,7 @@
 			COPYRIGHT © DAERICH 2020
 ALL RIGHTS RESERVED EXCEPT OTHERWISE STATED IN COPYRIGHT.TXT
    ------------------------------------------ */
+using DaErich.Core.External;
 using GTA;
 using RMVL_Scripthookv.Dashboard;
 using RMVL_Scripthookv.Util;
@@ -30,14 +31,18 @@ namespace RMVL_Scripthookv.MTL
 
         private readonly IntPtr mtlib;
         private readonly bool mtPresent;
-        private readonly string logpath;
-        private readonly string animdict = "anim@veh@driveby@plane@luxor2@rear_ds@1h";
-        private readonly string anim = "outro_0";
+        private readonly string logpath = "scripts/MTCompatibilty.log";
+        private readonly string path = "scripts/VehicleLocker.ini";
+        private readonly string animdict;
+        private readonly string anim;
 
         public ManualTransmission()
         {
+            IniFile ini = new IniFile(path);
+            animdict = ini.Read("animdict", "MTSupport");
+            anim = ini.Read("anim", "MTSupport");
+
             Tick += OnTick;
-            logpath = "scripts/MTCompatibilty.log";
             mtlib = Dll.GetModuleHandle(@"Gears.asi");
             if(mtlib == IntPtr.Zero)
             {
@@ -56,10 +61,12 @@ namespace RMVL_Scripthookv.MTL
             if(IsActive == null || AddIgnoreVehicle == null || NeutralGear == null)
             {
                 mtPresent = false;
+                Logger.Write(logpath, "MTSupport disabled!");
             }
             else
             {
                 mtPresent = true;
+                Logger.Write(logpath, "MTSupport initialized!");
             }
 
         }
@@ -87,7 +94,7 @@ namespace RMVL_Scripthookv.MTL
         {
             Vehicle playerVeh = Game.Player.Character.CurrentVehicle;
 
-            if (IsActive() && playerVeh != null && playerVeh.Exists() && !NeutralGear() && ShiftMode() == 3)
+            if (IsActive() && playerVeh != null && playerVeh.Exists() && Game.Player.Character.IsSittingInVehicle() && !NeutralGear() && ShiftMode() == 3)
             {
                 Game.Player.Character.Task.PlayAnimation(animdict, anim, 8f, -1, AnimationFlags.UpperBodyOnly | (AnimationFlags)32);
             }
