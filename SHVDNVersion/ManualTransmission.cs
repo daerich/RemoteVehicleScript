@@ -35,6 +35,7 @@ namespace RMVL_Scripthookv.MTL
         private readonly string path = "scripts/VehicleLocker.ini";
         private readonly string animdict;
         private readonly string anim;
+        private bool isEngaged = false;
 
         public ManualTransmission()
         {
@@ -94,9 +95,14 @@ namespace RMVL_Scripthookv.MTL
         {
             Vehicle playerVeh = Game.Player.Character.CurrentVehicle;
 
-            if (IsActive() && playerVeh != null && playerVeh.Exists() && Game.Player.Character.IsSittingInVehicle() && !NeutralGear() && ShiftMode() == 3)
+            if (!isEngaged && IsActive() && playerVeh != null && playerVeh.Exists() && Game.Player.Character.IsSittingInVehicle() && !NeutralGear() && ShiftMode() == 3)
             {
                 Game.Player.Character.Task.PlayAnimation(animdict, anim, 8f, -1, AnimationFlags.UpperBodyOnly | (AnimationFlags)32);
+                isEngaged = true;
+            }
+            if(!Game.Player.Character.IsSittingInVehicle() && isEngaged)
+            {
+                isEngaged = false;
             }
         }
 
