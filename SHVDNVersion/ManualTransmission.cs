@@ -95,15 +95,19 @@ namespace RMVL_Scripthookv.MTL
         {
             Vehicle playerVeh = Game.Player.Character.CurrentVehicle;
 
-            if (!isEngaged && IsActive() && playerVeh != null && playerVeh.Exists() && Game.Player.Character.IsSittingInVehicle() && !NeutralGear() && ShiftMode() == 3)
+            if (!isEngaged && IsActive() && playerVeh != null && playerVeh.Exists() && Game.Player.Character.IsSittingInVehicle() && NeutralGear() && ShiftMode() == 3)
             {
                 Game.Player.Character.Task.PlayAnimation(animdict, anim, 8f, -1, AnimationFlags.UpperBodyOnly | (AnimationFlags)32);
                 isEngaged = true;
             }
-            if(!Game.Player.Character.IsSittingInVehicle() && isEngaged)
+            if (isEngaged)
             {
-                isEngaged = false;
+                if (!Game.Player.Character.IsSittingInVehicle() || !NeutralGear())
+                {
+                    isEngaged = false;
+                }
             }
+           
         }
 
 
