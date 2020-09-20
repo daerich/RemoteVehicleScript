@@ -35,6 +35,7 @@ namespace RMVL_Scripthookv
             {
                 Plugin Plg = new Plugin();
                 Vehicle myVehicle = Plg.Vehicle;
+                Game.Player.Character.Task.PlayAnimation("anim@mp_player_intmenu@key_fob@", "fob_click", 8f, -1, (AnimationFlags)32| AnimationFlags.UpperBodyOnly);
                 if (myVehicle != null && myVehicle.Position.DistanceTo(Game.Player.Character.Position) <= 100f)
                 {
                     Plg.BlipSiren();
@@ -55,6 +56,7 @@ namespace RMVL_Scripthookv
             {
                 Plugin Plg = new Plugin();
                 Vehicle myVehicle = Plg.Vehicle;
+                Game.Player.Character.Task.PlayAnimation("anim@mp_player_intmenu@key_fob@", "fob_click", 8f, -1, (AnimationFlags)32 | AnimationFlags.UpperBodyOnly);
                 if (myVehicle != null && myVehicle.Position.DistanceTo(Game.Player.Character.Position) <= 100f)
                 {
                     Plg.RollDown();
